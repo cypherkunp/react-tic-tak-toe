@@ -3,22 +3,34 @@ import Square from './square';
 
 class Board extends Component {
   state = {
-    squares: Array(9).fill(null)
+    squares: Array(9).fill(null),
+    xIsNext: true
   };
 
-  handleClick = id => {
+  handleClick(id) {
     const squares = [...this.state.squares];
-    squares[id] = 'X';
-    this.setState({ squares });
-  };
+    if (calculateWinner(squares) || squares[id]) {
+      return;
+    }
+
+    squares[id] = this.state.xIsNext ? 'X' : 'O';
+    const xIsNext = !this.state.xIsNext;
+
+    this.setState({ squares, xIsNext });
+  }
 
   renderSquare(square, i) {
     return <Square value={square} onClick={() => this.handleClick(i)} />;
   }
 
+  getStatusHeader(player, xIsNext) {
+    return player ? `Winner is player: ${player}` : `Next Payer ${xIsNext ? 'X' : 'O'}`;
+  }
+
   render() {
-    const statusMessage = 'Next Payer X';
-    const { squares } = this.state;
+    const { squares, xIsNext } = this.state;
+
+    let statusMessage = this.getStatusHeader(calculateWinner(this.state.squares), xIsNext);
 
     return (
       <React.Fragment>
@@ -41,6 +53,30 @@ class Board extends Component {
       </React.Fragment>
     );
   }
+}
+
+function calculateWinner(squares) {
+  let winner = null;
+  const winCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for (const wc of winCombinations) {
+    const [a, b, c] = wc;
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      winner = squares[a];
+      break;
+    }
+  }
+
+  return winner;
 }
 
 export default Board;
