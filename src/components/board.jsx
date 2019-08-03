@@ -34,7 +34,9 @@ class Board extends Component {
 
     return (
       <React.Fragment>
-        <div className="status">{statusMessage}</div>
+        <div className="status alert alert-info" role="alert">
+          {statusMessage}
+        </div>
         <div className="board-row">
           {this.renderSquare(squares[0], 0)}
           {this.renderSquare(squares[1], 1)}

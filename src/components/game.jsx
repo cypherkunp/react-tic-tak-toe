@@ -6,12 +6,24 @@ class Game extends Component {
   state = {};
   render() {
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
+      <main className="container-fluid">
+        <div class="row align-items-center">
+          <div className="col-sm" />
+          <div className="col-sm">
+            <div class="card ">
+              <div className="game">
+                <div className="game-board">
+                  <center>
+                    <Board />
+                  </center>
+                </div>
+                <div className="game-info" />
+              </div>
+            </div>
+          </div>
+          <div className="col-sm" />
         </div>
-        <div className="game-info" />
-      </div>
+      </main>
     );
   }
 }
